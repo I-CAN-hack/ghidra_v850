@@ -478,7 +478,7 @@ buildPushSp: is rXX & buildPushSp [ counter=counter-1; regNum=regNum+1; ]
 macro rotate_left (res, _val, _shift) {
 	local val = _val;
 	local shift = _shift;
-	res = (val << shift) | (val >> (31 - shift));
+	res = (val << shift) | (val >> (32 - shift));
 	set_nOV_S_Z (res);
 	local msb = res[0, 1];
 	set_C ((msb != 0) && (shift != 0));
