@@ -285,15 +285,12 @@ attach variables [ VR0004 VR1115 ] [
 :ldl.w [R0004], R2731	is op0515=0x03F & R0004; op1626=0x378 & R2731 {
 	local addr:4 = R0004;
 	R2731 = *:4 addr;
-	# TODO store address
 }
 # store conditional (atomic)
 #{ "stc.w",	two (0x07e0, 0x037a),	two (0xffe0, 0x07ff),	{R3, R1},		2, PROCESSOR_V850E3V5_UP },
 :stc.w R2731, [R0004]	is op0515=0x03F & R0004; op1626=0x37A & R2731 {
 	local addr:4 = R0004;
 	*:4 addr = R2731 : 4;
-	R2731 = 1;
-	# TODO set R2731 to 0, if addr of previous ldl.w is not the same
 }
 
 
