@@ -145,8 +145,8 @@ macro saturate(value) {
 	r1115 = res:4;}
 
 # MULHI imm16, reg1, reg2
-:mulhi s1631, R0004, R1115 is op0510=0x37 & R1115 & R0004; s1631 {
-	R1115 = sext(R0004:2) * s1631;
+:mulhi s1631, R0004, r1115 is op0510=0x37 & r1115 & R0004; s1631 {
+	r1115 = sext(R0004:2) * s1631;
 }
 
 # MUL reg1, reg2, reg3
