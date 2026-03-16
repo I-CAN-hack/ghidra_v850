@@ -480,8 +480,8 @@ macro rotate_left (res, _val, _shift) {
 	local shift = _shift;
 	res = (val << shift) | (val >> (32 - shift));
 	set_nOV_S_Z (res);
-	local msb = res[0, 1];
-	set_C ((msb != 0) && (shift != 0));
+	local lsb = res[0, 1];
+	set_C(lsb != 0);
 }
 :rotl R0004, R1115, R2731	is op0510=0x3F & R0004 & R1115; op1626=0x0C6 & R2731 {
 	rotate_left(R2731, R1115, R0004 & 0x1F);
