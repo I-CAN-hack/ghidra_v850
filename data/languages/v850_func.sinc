@@ -5,12 +5,14 @@
 
 # JMP [reg1]
 :jmp [R0004] is op0515=0x003 & R0004 & op0004=31 {
-	PC = R0004;
-	return [R0004];
+	local addr:4 = R0004 & 0xFFFFFFFE;
+	PC = addr;
+	return [addr];
 }
 :jmp [R0004] is op0515=0x003 & R0004 & op0004 != 31 {
-	PC = R0004;
-	goto [R0004];
+	local addr:4 = R0004 & 0xFFFFFFFE;
+	PC = addr;
+	goto [addr];
 }
 
 # JR disp32
@@ -28,7 +30,7 @@
 
 # JMP disp32[reg1]
 :jmp addr32abs[R0004] is op0515=0x037 & R0004; op1616=0 ... & addr32abs {
-	local addr = addr32abs + R0004;
+	local addr:4 = (addr32abs + R0004) & 0xFFFFFFFE;
 	goto [addr];
 }
 

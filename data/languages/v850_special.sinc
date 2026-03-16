@@ -117,19 +117,19 @@
 }
 # CTRET
 :ctret is op0515=0x3F; op1631=0x0144 {
-	PC = CTPC;
+	PC = CTPC & 0xFFFFFFFE;
 	PSW = (PSW & ~0x1f) | (CTPSW & 0x1f);
 	return [PC];
 }
 # EIRET
 :eiret is op0515=0x3F; op1631=0x0148 {
-	PC = EIPC;
+	PC = EIPC & 0xFFFFFFFE;
 	PSW = EIPSW;
 	return [PC];
 }
 # FERET
 :feret is op0515=0x3F; op1631=0x014A {
-	PC = FEPC;
+	PC = FEPC & 0xFFFFFFFE;
 	PSW = FEPSW;
 	return [PC];
 }
