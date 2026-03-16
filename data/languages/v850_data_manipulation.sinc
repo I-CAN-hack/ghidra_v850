@@ -63,27 +63,27 @@ macro shift_left (res, _val, _shift) {
 
 # SHR reg1, reg2
 :shr R0004, R1115 is op0510=0x3F & R0004 & R1115; op1631=0x80 {
-	shift_right_u (R1115, R1115, R0004);
+	shift_right_u (R1115, R1115, R0004 & 0x1F);
 }
 # SHR reg1, reg2, reg3
 :shr R0004, R1115, R2731 is op0510=0x3F & R0004 & R1115; op1626=0x82 & R2731 {
-	shift_right_u (R2731, R1115, R0004);
+	shift_right_u (R2731, R1115, R0004 & 0x1F);
 }
 # SAR reg1, reg2
 :sar R0004, R1115 is op0510=0x3F & R0004 & R1115; op1631=0xA0 {
-	shift_right_s (R1115, R1115, R0004);
+	shift_right_s (R1115, R1115, R0004 & 0x1F);
 }
 # SAR reg1, reg2, reg3
 :sar R0004, R1115, R2731 is op0510=0x3F & R0004 & R1115; op1626=0xA2 & R2731 {
-	shift_right_s (R2731, R1115, R0004);
+	shift_right_s (R2731, R1115, R0004 & 0x1F);
 }
 # SHL reg1, reg2
 :shl R0004, R1115 is op0510=0x3F & R0004 & R1115; op1631=0xC0 {
-	shift_left (R1115, R1115, R0004);
+	shift_left (R1115, R1115, R0004 & 0x1F);
 }
 # SHL reg1, reg2, reg3
 :shl R0004, R1115, R2731 is op0510=0x3F & R0004 & R1115; op1626=0xC2 & R2731 {
-	shift_left (R2731, R1115, R0004);
+	shift_left (R2731, R1115, R0004 & 0x1F);
 }
 
 # BSW reg2, reg3
