@@ -171,7 +171,7 @@ macro SearchLeft(count, value, pattern) {
 # SCH1L reg2, reg3
 :sch1l R1115, R2731 is op0010=0x7E0 & R1115; op1626=0x366 & R2731 {
 	local count:4 = 0;
-	SearchLeft(count, R1115, 0);
+	SearchLeft(count, R1115, 1);
 	$(PSW_Z)  = (R1115 == 0);	# one bit not found
 	$(PSW_CY) = (R1115 != 0);	# one bit found
 	R2731 = count;
