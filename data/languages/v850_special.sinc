@@ -52,7 +52,7 @@
 # CALLT imm6
 :callt op0005 is op0615=0x008 & op0005 {
 	CTPC = inst_next;
-	CTPSW = PSW;
+	CTPSW = PSW & 0x1f;
 	local lbl:4 = CTBP + (op0005 << 1);
 	local addr:4 = CTBP + zext(*:2 lbl);
 	PC = addr;
@@ -118,7 +118,7 @@
 # CTRET
 :ctret is op0515=0x3F; op1631=0x0144 {
 	PC = CTPC;
-	PSW = CTPSW;
+	PSW = (PSW & ~0x1f) | (CTPSW & 0x1f);
 	return [PC];
 }
 # EIRET
