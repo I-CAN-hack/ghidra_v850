@@ -420,12 +420,14 @@ rXX: lp		is lp & regNum=31	{ export lp; }
 buildPopSp: is counter=0 { }
 buildPopSp: is counter=1 & rXX [ counter=0; regNum=regNum-1; ]
 {
-	rXX = *mult_addr;
+	local addr:4 = mult_addr & 0xFFFFFFFC;
+	rXX = *:4 addr;
 	mult_addr = mult_addr + 4;
 }
 buildPopSp: is rXX & buildPopSp [ counter=counter-1; regNum=regNum-1; ]
 {
-	rXX = *mult_addr;
+	local addr:4 = mult_addr & 0xFFFFFFFC;
+	rXX = *:4 addr;
 	mult_addr = mult_addr + 4;
 	build buildPopSp;
 }
@@ -447,12 +449,14 @@ buildPushSp: is counter=0 { }
 buildPushSp: is counter=1 & rXX [ counter=0; regNum=regNum+1; ]
 {
 	mult_addr = mult_addr - 4;
-	*mult_addr = rXX;
+	local addr:4 = mult_addr & 0xFFFFFFFC;
+	*:4 addr = rXX;
 }
 buildPushSp: is rXX & buildPushSp [ counter=counter-1; regNum=regNum+1; ]
 {
 	mult_addr = mult_addr - 4;
-	*mult_addr = rXX;
+	local addr:4 = mult_addr & 0xFFFFFFFC;
+	*:4 addr = rXX;
 	build buildPushSp;
 }
 #{ "pushsp",	two (0x47e0, 0x0160),	two (0xffe0, 0x07ff),	{R1, R3}, 		0, PROCESSOR_V850E3V5_UP },

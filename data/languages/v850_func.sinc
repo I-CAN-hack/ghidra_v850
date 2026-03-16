@@ -48,7 +48,11 @@
 	call addr22;
 }
 
-macro pop(reg) { reg = *:4 sp; sp = sp + 4; }
+macro pop(reg) {
+	local addr:4 = sp & 0xFFFFFFFC;
+	reg = *:4 addr;
+	sp = sp + 4;
+}
 
 DispList31: lp					is 				prep21=1 & lp			{	pop(lp); }
 DispList31:						is 				prep21=0				{ }
@@ -103,7 +107,11 @@ DispList: { DispList21 }		is DispList21 & prep27=0				{ }
 }
 
 
-macro push(reg) { sp = sp - 4; *:4 sp = reg; }
+macro push(reg) {
+	sp = sp - 4;
+	local addr:4 = sp & 0xFFFFFFFC;
+	*:4 addr = reg;
+}
 
 PrepList20:	r20					is 				prep27=1 & r20			{	push(r20); }
 PrepList20:						is 				prep27=0				{ }
