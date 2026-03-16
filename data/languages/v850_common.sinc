@@ -45,10 +45,12 @@ define context popspContext
 @endif
 
 
+@define PSW_UM  "PSW[30,1]"
 @define PSW_PP  "PSW[19,1]"
 @define PSW_NPW "PSW[18,1]"
 @define PSW_DMP "PSW[17,1]"
 @define PSW_IMP "PSW[16,1]"
+@define PSW_EBV "PSW[15,1]"
 @define PSW_NP  "PSW[7,1]"
 @define PSW_EP  "PSW[6,1]"
 @define PSW_ID  "PSW[5,1]"
