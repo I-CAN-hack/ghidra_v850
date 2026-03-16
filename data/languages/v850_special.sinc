@@ -173,6 +173,12 @@
 :eiret is op0515=0x3F; op1631=0x0148 {
 	PC = EIPC & 0xFFFFFFFE;
 	PSW = EIPSW;
+@if defined(V850E3)
+	if ($(PSW_EP) != 0) goto <skip_ispr_update>;
+	if ((INTCFG & 1) != 0) goto <skip_ispr_update>;
+	ISPR = ISPR & (ISPR - 1);
+	<skip_ispr_update>
+@endif
 	return [PC];
 }
 # FERET
