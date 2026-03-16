@@ -25,7 +25,17 @@
 }
 
 # RIE
-:rie is op0015=0x0040 unimpl # reserved instruction for future expansion
+:rie is op0015=0x0040 {
+	FEPC = inst_start;
+	FEPSW = PSW;
+	FEIC = 0x60;
+	$(ECR_FECC) = 0x60;
+	$(PSW_EP) = 1;
+	$(PSW_ID) = 1;
+	$(PSW_NP) = 1;
+	PC = 0x60;
+	goto [PC];
+}
 
 # SWITCH reg1
 :switch r0004 is op0515=0x002 & r0004 {
@@ -60,7 +70,17 @@
 }
 
 # RIE
-:rie is op0410=0x7F; op1631=0 unimpl # reserved instruction for future expansion
+:rie is op0410=0x7F; op1631=0 {
+	FEPC = inst_start;
+	FEPSW = PSW;
+	FEIC = 0x60;
+	$(ECR_FECC) = 0x60;
+	$(PSW_EP) = 1;
+	$(PSW_ID) = 1;
+	$(PSW_NP) = 1;
+	PC = 0x60;
+	goto [PC];
+}
 
 # LDSR reg2, regID
 :ldsr R0004, SR1115 is op0510=0x3F & SR1115 & R0004; op1631=0x20 {
