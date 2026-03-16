@@ -101,7 +101,9 @@ macro shift_left (res, _val, _shift) {
 	local x2 = R1115[16,8];
 	local x3 = R1115[24,8];
 	R2731 = zext(x2 << 24) | zext(x3 << 16) | zext(x0 << 8) | zext(x1);
-	set_nOV_S_Z (R2731);
+	clrOV();
+	setS(R2731);
+	setZ(R2731[0,16]);
 	set_C ((x0 == 0) || (x1 == 0));
 }
 # HSW reg2, reg3
@@ -117,7 +119,9 @@ macro shift_left (res, _val, _shift) {
 :hsh R1115, R2731 is op0010=0x7E0 & R1115; op1626=0x346 & R2731 {
 	local x0 = R1115[0,16];
 	R2731 = R1115;
-	set_nOV_S_Z (R2731);
+	clrOV();
+	setS(R2731);
+	setZ(R2731[0,16]);
 	set_C (x0 == 0);
 }
 
