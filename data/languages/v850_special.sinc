@@ -28,8 +28,8 @@
 :rie is op0015=0x0040 unimpl # reserved instruction for future expansion
 
 # SWITCH reg1
-:switch R0004 is op0515=0x002 & R0004 {
-	local lbl:4 = inst_next + (R0004 << 1);
+:switch r0004 is op0515=0x002 & r0004 {
+	local lbl:4 = inst_next + (r0004 << 1);
 	local addr:4 = inst_next + (sext(*:2 lbl) << 1);
 	PC = addr;
 	goto [addr];
