@@ -433,14 +433,15 @@ buildPopSp: is rXX & buildPopSp [ counter=counter-1; regNum=regNum-1; ]
 }
 #{ "popsp",	two (0x67e0, 0x0160),	two (0xffe0, 0x07ff),	{R1, R3}, 		0, PROCESSOR_V850E3V5_UP },
 :popsp R0004, R2731		is op0515=0x33F & R0004 & op0004 ; op1626=0x160 & R2731 & op2731 & buildPopSp
-[ counter=op2731-op0004+1; regNum=op2731+1; ] {
+[ counter=((op2731-op0004+1) & ~((op2731-op0004+1) >> 31)); regNum=op2731+1; ] {
 	# popsp rh, rt
 	# Loads general-purpose register rt to rh from the stack in descending order (rt, rt - 1, rt - 2, ..., rh). After all the registers
 	# down to the specified register have been loaded, sp is updated (incremented)
 	# check for illegal syntax, when rh > rt
 	# sp (r3) value not restored
 	mult_addr = sp;
-	local tmp = sp + (op2731-op0004+1) * 4;
+	local count:4 = ((op2731-op0004+1) & ~((op2731-op0004+1) >> 31));
+	local tmp = sp + count * 4;
 	build buildPopSp;
 	sp = tmp;
 }
@@ -461,13 +462,14 @@ buildPushSp: is rXX & buildPushSp [ counter=counter-1; regNum=regNum+1; ]
 }
 #{ "pushsp",	two (0x47e0, 0x0160),	two (0xffe0, 0x07ff),	{R1, R3}, 		0, PROCESSOR_V850E3V5_UP },
 :pushsp R0004, R2731	is op0515=0x23F & R0004 & op0004 ; op1626=0x160 & R2731 & op2731 & buildPushSp
-[ counter=op2731-op0004+1; regNum=op0004-1; ] {
+[ counter=((op2731-op0004+1) & ~((op2731-op0004+1) >> 31)); regNum=op0004-1; ] {
 	# pushsp rh, rt
 	# Stores general-purpose register rh to rt in the stack in ascending order (rh, rh +1, rh + 2, ..., rt). After all the specified
 	# registers have been stored, sp is updated (decremented).
 	# check for illegal syntax, when rh > rt
 	mult_addr = sp;
-	local tmp = sp - (op2731-op0004+1) * 4;
+	local count:4 = ((op2731-op0004+1) & ~((op2731-op0004+1) >> 31));
+	local tmp = sp - count * 4;
 	build buildPushSp;
 	sp = tmp;	
 }
