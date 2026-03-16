@@ -7,7 +7,6 @@
   <stackpointer register="sp" space="ram" growth="negative"/>
 
   <prefersplit style="inhalf">
-    <register name="gptp"/>
     <register name="eplp"/>
   </prefersplit>
 
