@@ -43,8 +43,6 @@ macro shift_left (res, _val, _shift) {
 	set_nOV_S_Z (val << shift);
 	local c:5 = zext(val) << shift;
 	set_C (c[32,1]);
-	local msb = (val & (1 << (shift - 1))) >> 32;
-	set_C ((msb != 0) && (shift != 0));
 }
 
 
