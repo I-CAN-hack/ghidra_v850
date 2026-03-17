@@ -26,7 +26,8 @@
 }
 # TST reg1, reg2
 :tst R0004, R1115 is op0510=0x0B & R0004 & R1115 {
-	set_nOV_S_Z(R1115);
+	local result:4 = R1115 & R0004;
+	set_nOV_S_Z(result);
 }
 
 # ORI imm16, reg1, reg2
@@ -76,25 +77,29 @@
 # SET1 reg2, [reg1]
 :set1 R1115, [R0004] is op0510=0x3F & R0004 & R1115; op1631=0xE0 {
 	local var = *:1 R0004;
-	*:1 R0004 = var | (1 << R1115);
-	setZ(var & (1 << R1115));
+	local bit:4 = R1115 & 7;
+	*:1 R0004 = var | (1 << bit);
+	setZ(var & (1 << bit));
 }
 # NOT1 reg2, [reg1]
 :not1 R1115, [R0004] is op0510=0x3F & R0004 & R1115; op1631=0xE2 {
 	local var = *:1 R0004;
-	*:1 R0004 = var ^ (1 << R1115);
-	setZ(var & (1 << R1115));
+	local bit:4 = R1115 & 7;
+	*:1 R0004 = var ^ (1 << bit);
+	setZ(var & (1 << bit));
 }
 # CLR1 reg2, [reg1]
 :clr1 R1115, [R0004] is op0510=0x3F & R0004 & R1115; op1631=0xE4 {
 	local var = *:1 R0004;
-	*:1 R0004 = var & ~(1 << R1115);
-	setZ(var & (1 << R1115));
+	local bit:4 = R1115 & 7;
+	*:1 R0004 = var & ~(1 << bit);
+	setZ(var & (1 << bit));
 }
 # TST1 reg2, [reg1]
 :tst1 R1115, [R0004] is op0510=0x3F & R0004 & R1115; op1631=0xE6 {
 	local var = *:1 R0004;
-	setZ(var & (1 << R1115));
+	local bit:4 = R1115 & 7;
+	setZ(var & (1 << bit));
 }
 
 

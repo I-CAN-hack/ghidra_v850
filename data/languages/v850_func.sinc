@@ -5,12 +5,14 @@
 
 # JMP [reg1]
 :jmp [R0004] is op0515=0x003 & R0004 & op0004=31 {
-	PC = R0004;
-	return [R0004];
+	local addr:4 = R0004 & 0xFFFFFFFE;
+	PC = addr;
+	return [addr];
 }
 :jmp [R0004] is op0515=0x003 & R0004 & op0004 != 31 {
-	PC = R0004;
-	goto [R0004];
+	local addr:4 = R0004 & 0xFFFFFFFE;
+	PC = addr;
+	goto [addr];
 }
 
 # JR disp32
@@ -28,7 +30,7 @@
 
 # JMP disp32[reg1]
 :jmp addr32abs[R0004] is op0515=0x037 & R0004; op1616=0 ... & addr32abs {
-	local addr = addr32abs + R0004;
+	local addr:4 = (addr32abs + R0004) & 0xFFFFFFFE;
 	goto [addr];
 }
 
@@ -46,7 +48,11 @@
 	call addr22;
 }
 
-macro pop(reg) { reg = *:4 sp; sp = sp + 4; }
+macro pop(reg) {
+	local addr:4 = sp & 0xFFFFFFFC;
+	reg = *:4 addr;
+	sp = sp + 4;
+}
 
 DispList31: lp					is 				prep21=1 & lp			{	pop(lp); }
 DispList31:						is 				prep21=0				{ }
@@ -101,7 +107,11 @@ DispList: { DispList21 }		is DispList21 & prep27=0				{ }
 }
 
 
-macro push(reg) { sp = sp - 4; *:4 sp = reg; }
+macro push(reg) {
+	sp = sp - 4;
+	local addr:4 = sp & 0xFFFFFFFC;
+	*:4 addr = reg;
+}
 
 PrepList20:	r20					is 				prep27=1 & r20			{	push(r20); }
 PrepList20:						is 				prep27=0				{ }

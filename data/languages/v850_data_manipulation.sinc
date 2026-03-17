@@ -43,8 +43,6 @@ macro shift_left (res, _val, _shift) {
 	set_nOV_S_Z (val << shift);
 	local c:5 = zext(val) << shift;
 	set_C (c[32,1]);
-	local msb = (val & (1 << (shift - 1))) >> 32;
-	set_C ((msb != 0) && (shift != 0));
 }
 
 
@@ -63,27 +61,27 @@ macro shift_left (res, _val, _shift) {
 
 # SHR reg1, reg2
 :shr R0004, R1115 is op0510=0x3F & R0004 & R1115; op1631=0x80 {
-	shift_right_u (R1115, R1115, R0004);
+	shift_right_u (R1115, R1115, R0004 & 0x1F);
 }
 # SHR reg1, reg2, reg3
 :shr R0004, R1115, R2731 is op0510=0x3F & R0004 & R1115; op1626=0x82 & R2731 {
-	shift_right_u (R2731, R1115, R0004);
+	shift_right_u (R2731, R1115, R0004 & 0x1F);
 }
 # SAR reg1, reg2
 :sar R0004, R1115 is op0510=0x3F & R0004 & R1115; op1631=0xA0 {
-	shift_right_s (R1115, R1115, R0004);
+	shift_right_s (R1115, R1115, R0004 & 0x1F);
 }
 # SAR reg1, reg2, reg3
 :sar R0004, R1115, R2731 is op0510=0x3F & R0004 & R1115; op1626=0xA2 & R2731 {
-	shift_right_s (R2731, R1115, R0004);
+	shift_right_s (R2731, R1115, R0004 & 0x1F);
 }
 # SHL reg1, reg2
 :shl R0004, R1115 is op0510=0x3F & R0004 & R1115; op1631=0xC0 {
-	shift_left (R1115, R1115, R0004);
+	shift_left (R1115, R1115, R0004 & 0x1F);
 }
 # SHL reg1, reg2, reg3
 :shl R0004, R1115, R2731 is op0510=0x3F & R0004 & R1115; op1626=0xC2 & R2731 {
-	shift_left (R2731, R1115, R0004);
+	shift_left (R2731, R1115, R0004 & 0x1F);
 }
 
 # BSW reg2, reg3
@@ -103,7 +101,9 @@ macro shift_left (res, _val, _shift) {
 	local x2 = R1115[16,8];
 	local x3 = R1115[24,8];
 	R2731 = zext(x2 << 24) | zext(x3 << 16) | zext(x0 << 8) | zext(x1);
-	set_nOV_S_Z (R2731);
+	clrOV();
+	setS(R2731);
+	setZ(R2731[0,16]);
 	set_C ((x0 == 0) || (x1 == 0));
 }
 # HSW reg2, reg3
@@ -119,7 +119,9 @@ macro shift_left (res, _val, _shift) {
 :hsh R1115, R2731 is op0010=0x7E0 & R1115; op1626=0x346 & R2731 {
 	local x0 = R1115[0,16];
 	R2731 = R1115;
-	set_nOV_S_Z (R2731);
+	clrOV();
+	setS(R2731);
+	setZ(R2731[0,16]);
 	set_C (x0 == 0);
 }
 
@@ -169,7 +171,7 @@ macro SearchLeft(count, value, pattern) {
 # SCH1L reg2, reg3
 :sch1l R1115, R2731 is op0010=0x7E0 & R1115; op1626=0x366 & R2731 {
 	local count:4 = 0;
-	SearchLeft(count, R1115, 0);
+	SearchLeft(count, R1115, 1);
 	$(PSW_Z)  = (R1115 == 0);	# one bit not found
 	$(PSW_CY) = (R1115 != 0);	# one bit found
 	R2731 = count;
